@@ -1,0 +1,26 @@
+# Next.js
+.next/
+out/
+
+# Dépendances
+node_modules/
+
+# Variables d'environnement — NE JAMAIS COMMITTER
+.env
+.env.local
+.env.production
+
+# Build
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# TypeScript
+*.tsbuildinfo
