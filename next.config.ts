@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "localhost",
-        port: "9000",
+        port: "9002",
         pathname: "/maisonprint/**",
       },
       // MinIO ou S3-compatible (prod) — ajouter le domaine en production

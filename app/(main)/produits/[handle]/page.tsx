@@ -1,6 +1,9 @@
 import { sdk } from "@/lib/medusa"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import { AddToCartButton } from "@/components/cart/AddToCartButton"
+import { CompatibleProducts } from "@/components/CompatibleProducts"
+import { getCompatibleInks, getCompatiblePrinters } from "@/lib/compatibility"
 
 export const revalidate = 60
 
@@ -10,12 +13,10 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { handle } = await params
-
   try {
     const { products } = await sdk.store.product.list({ handle })
     const product = products[0]
     if (!product) return {}
-
     return {
       title: product.title ?? undefined,
       description: product.description ?? undefined,
@@ -47,7 +48,14 @@ export default async function ProductPage({ params }: Props) {
   if (!product) notFound()
 
   const category = product.categories?.[0]
-  const firstPrice = product.variants?.[0]?.prices?.[0]
+  const categoryHandle = category?.handle ?? ""
+  const firstPrice = (product.variants?.[0] as any)?.prices?.[0]
+
+  const isInk = categoryHandle === "encre-cartouches"
+  const isPrinter = categoryHandle === "imprimantes"
+
+  const compatibleInkHandles = isPrinter ? getCompatibleInks(handle) : []
+  const compatiblePrinterHandles = isInk ? getCompatiblePrinters(handle) : []
 
   return (
     <>
@@ -97,54 +105,12 @@ export default async function ProductPage({ params }: Props) {
             </p>
           )}
 
-          {/* Variantes */}
-          {product.options && product.options.length > 0 && (
-            <div style={{ marginBottom: "1.5rem" }}>
-              {product.options.map((option) => (
-                <div key={option.id} style={{ marginBottom: "1rem" }}>
-                  <p style={{ fontWeight: "600", marginBottom: "0.5rem" }}>{option.title}</p>
-                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                    {option.values?.map((value) => (
-                      <button
-                        key={value.id}
-                        style={{
-                          padding: "0.4rem 1rem",
-                          border: "1px solid #ccc",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          background: "#fff",
-                          fontSize: "0.875rem",
-                        }}
-                        aria-label={`${option.title} : ${value.value}`}
-                      >
-                        {value.value}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          <AddToCartButton
+            variants={(product.variants ?? []) as any}
+            options={(product.options ?? []) as any}
+          />
 
-          {/* Bouton panier (Phase 2 — interactif) */}
-          <button
-            style={{
-              width: "100%",
-              padding: "0.9rem",
-              background: "#1a1a1a",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              fontSize: "1rem",
-              fontWeight: "600",
-              cursor: "pointer",
-            }}
-            aria-label="Ajouter au panier"
-          >
-            Ajouter au panier
-          </button>
-
-          {/* Métadonnées produit (dimensions, compatibilité) */}
+          {/* Métadonnées produit */}
           {product.metadata && Object.keys(product.metadata).length > 0 && (
             <details style={{ marginTop: "2rem" }}>
               <summary style={{ cursor: "pointer", fontWeight: "600", marginBottom: "0.5rem" }}>
@@ -155,7 +121,9 @@ export default async function ProductPage({ params }: Props) {
                   {Object.entries(product.metadata).map(([key, value]) => (
                     <tr key={key} style={{ borderBottom: "1px solid #f0f0f0" }}>
                       <td style={{ padding: "0.4rem 0", color: "#666", width: "40%" }}>{key}</td>
-                      <td style={{ padding: "0.4rem 0" }}>{String(value)}</td>
+                      <td style={{ padding: "0.4rem 0" }}>
+                        {Array.isArray(value) ? value.join(", ") : String(value)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -164,6 +132,14 @@ export default async function ProductPage({ params }: Props) {
           )}
         </div>
       </div>
+
+      {/* Compatibilité */}
+      {isPrinter && compatibleInkHandles.length > 0 && (
+        <CompatibleProducts handles={compatibleInkHandles} title="Consommables compatibles" />
+      )}
+      {isInk && compatiblePrinterHandles.length > 0 && (
+        <CompatibleProducts handles={compatiblePrinterHandles} title="Compatible avec ces imprimantes" />
+      )}
     </>
   )
 }

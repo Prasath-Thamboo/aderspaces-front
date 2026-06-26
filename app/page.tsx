@@ -60,7 +60,7 @@ export default async function HomePage() {
           <div className="product-grid">
             {products.map((product) => {
               const firstVariant = product.variants?.[0]
-              const firstPrice = firstVariant?.prices?.[0]
+              const firstPrice = (firstVariant as any)?.prices?.[0]
 
               return (
                 <a

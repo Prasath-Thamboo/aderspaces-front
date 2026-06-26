@@ -65,7 +65,7 @@ export default async function CategoryPage({ params }: Props) {
         <div className="product-grid">
           {products.map((product) => {
             const firstVariant = product.variants?.[0]
-            const firstPrice = firstVariant?.prices?.[0]
+            const firstPrice = (firstVariant as any)?.prices?.[0]
 
             return (
               <a
