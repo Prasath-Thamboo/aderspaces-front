@@ -24,7 +24,12 @@ async function searchProducts(q: string): Promise<SearchHit[]> {
     const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
     const res = await fetch(
       `${backendUrl}/store/search?q=${encodeURIComponent(q)}&limit=20`,
-      { next: { revalidate: 30 } }
+      {
+        headers: {
+          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || "",
+        },
+        next: { revalidate: 30 },
+      }
     )
     if (!res.ok) return []
     const data = await res.json()

@@ -14,15 +14,19 @@ export function AddToCartButton({ variants, options }: Props) {
   const [selected, setSelected] = useState<Record<string, string>>({})
   const [added, setAdded] = useState(false)
 
-  const selectedVariant = variants.find((v) =>
-    options.every((opt) => {
-      const selectedValue = selected[opt.id]
-      if (!selectedValue) return false
-      return v.options?.some(
-        (o: any) => o.option_id === opt.id && o.value === selectedValue
+  const needsSelection = variants.length > 1
+
+  const selectedVariant = needsSelection
+    ? variants.find((v) =>
+        options.every((opt) => {
+          const selectedValue = selected[opt.id]
+          if (!selectedValue) return false
+          return v.options?.some(
+            (o: any) => o.option_id === opt.id && o.value === selectedValue
+          )
+        })
       )
-    })
-  ) ?? (variants.length === 1 ? variants[0] : undefined)
+    : variants[0]
 
   const handleAdd = async () => {
     if (!selectedVariant) return
@@ -33,7 +37,7 @@ export function AddToCartButton({ variants, options }: Props) {
 
   return (
     <div>
-      {options.length > 1 && options.map((option) => (
+      {needsSelection && options.map((option) => (
         <div key={option.id} style={{ marginBottom: "1rem" }}>
           <p style={{ fontWeight: "600", marginBottom: "0.5rem" }}>{option.title}</p>
           <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
