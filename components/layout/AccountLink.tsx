@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
+import { AuthDrawer } from "@/components/layout/AuthDrawer"
 
 export function AccountLink() {
   const { customer, isLoading, logout } = useAuth()
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [authOpen, setAuthOpen] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -34,12 +36,22 @@ export function AccountLink() {
 
   if (!customer) {
     return (
-      <a href="/connexion" aria-label="Connexion" className="account-link">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-      </a>
+      <>
+        <button
+          type="button"
+          aria-label="Connexion"
+          aria-haspopup="dialog"
+          aria-expanded={authOpen}
+          className="account-link"
+          onClick={() => setAuthOpen(true)}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </button>
+        <AuthDrawer open={authOpen} onClose={() => setAuthOpen(false)} />
+      </>
     )
   }
 
