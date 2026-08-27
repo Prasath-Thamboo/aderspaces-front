@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 
 type Consent = { analytics: boolean; marketing: boolean }
 
-const COOKIE_NAME = "maisonprint_consent"
+const COOKIE_NAME = "aderspace_consent"
 
 function getConsent(): Consent | null {
   if (typeof document === "undefined") return null

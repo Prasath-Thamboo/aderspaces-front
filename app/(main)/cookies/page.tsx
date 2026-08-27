@@ -6,7 +6,7 @@ export default function CookiesPage() {
   return (
     <article className="legal-page">
       <h1>Politique de gestion des cookies</h1>
-      <p className="legal-date">Dernière mise à jour : 1er janvier 2025</p>
+      <p className="legal-date">Dernière mise à jour : 27 août 2026</p>
 
       <section>
         <h2>Qu&apos;est-ce qu&apos;un cookie ?</h2>
@@ -29,13 +29,13 @@ export default function CookiesPage() {
           </thead>
           <tbody>
             <tr>
-              <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>maisonprint_cart</td>
+              <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>aderspace_cart</td>
               <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>Essentiel</td>
               <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>30 jours</td>
               <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>Mémorisation du panier</td>
             </tr>
             <tr>
-              <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>maisonprint_consent</td>
+              <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>aderspace_consent</td>
               <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>Essentiel</td>
               <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>1 an</td>
               <td style={{ padding: "0.5rem", border: "1px solid #e5e5e5" }}>Mémorisation de vos préférences cookies</td>
@@ -67,7 +67,7 @@ export default function CookiesPage() {
 
       <section>
         <h2>Contact</h2>
-        <p>Pour toute question : dpo@maisonprint.fr</p>
+        <p>Pour toute question : dpo@aderspace.fr</p>
       </section>
     </article>
   )

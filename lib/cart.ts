@@ -1,4 +1,4 @@
-const CART_COOKIE = "maisonprint_cart"
+const CART_COOKIE = "aderspace_cart"
 
 export function getCartId(): string | undefined {
   if (typeof document === "undefined") return undefined

@@ -6,13 +6,13 @@ export default function PolitiqueConfidentialitePage() {
   return (
     <article className="legal-page">
       <h1>Politique de confidentialité</h1>
-      <p className="legal-date">Dernière mise à jour : 1er janvier 2025</p>
+      <p className="legal-date">Dernière mise à jour : 27 août 2026</p>
 
       <section>
         <h2>1. Responsable du traitement</h2>
         <p>
-          MaisonPrint SAS, 12 rue de l&apos;Innovation, 75001 Paris<br />
-          Email : dpo@maisonprint.fr
+          Aderspace SAS, 12 rue de l&apos;Innovation, 75001 Paris<br />
+          Email : dpo@aderspace.fr
         </p>
       </section>
 
@@ -94,7 +94,7 @@ export default function PolitiqueConfidentialitePage() {
           <li>Droit à la limitation du traitement</li>
         </ul>
         <p>
-          Pour exercer ces droits : <a href="/mes-droits">formulaire de demande RGPD</a> ou par email à dpo@maisonprint.fr.
+          Pour exercer ces droits : <a href="/mes-droits">formulaire de demande RGPD</a> ou par email à dpo@aderspace.fr.
           Vous pouvez également contacter la CNIL (www.cnil.fr) en cas de litige.
         </p>
       </section>

@@ -6,14 +6,14 @@ export default function CgvPage() {
   return (
     <article className="legal-page">
       <h1>Conditions Générales de Vente</h1>
-      <p className="legal-date">En vigueur au 1er janvier 2025</p>
+      <p className="legal-date">En vigueur au 27 août 2026</p>
 
       <section>
         <h2>Article 1 — Objet</h2>
         <p>
           Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre
-          MaisonPrint SAS (ci-après « le Vendeur ») et tout acheteur (ci-après « le Client ») effectuant
-          un achat sur le site maisonprint.fr.
+          Aderspace SAS (ci-après « le Vendeur ») et tout acheteur (ci-après « le Client ») effectuant
+          un achat sur le site aderspace.fr.
         </p>
       </section>
 
@@ -63,7 +63,17 @@ export default function CgvPage() {
       </section>
 
       <section>
-        <h2>Article 7 — Protection des données</h2>
+        <h2>Article 7 — Service de réparation</h2>
+        <p>
+          Le service de réparation et de maintenance informatique proposé par Aderspace fait l&apos;objet
+          d&apos;un devis préalable. Aucune intervention n&apos;est engagée sans acceptation écrite du devis
+          par le Client. Le détail du déroulement est présenté sur la page
+          {" "}<a href="/reparation">Réparation</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2>Article 8 — Protection des données</h2>
         <p>
           Les informations collectées lors de la commande sont nécessaires au traitement de celle-ci.
           Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de rectification et de suppression
@@ -72,7 +82,7 @@ export default function CgvPage() {
       </section>
 
       <section>
-        <h2>Article 8 — Droit applicable</h2>
+        <h2>Article 9 — Droit applicable</h2>
         <p>
           Les présentes CGV sont soumises au droit français. Tout litige relatif à leur interprétation
           et/ou leur exécution relève de la compétence des tribunaux français.
