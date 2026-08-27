@@ -1,8 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
+
+// N'autorise que les redirections internes (évite un open-redirect).
+function safeRedirect(raw: string | null): string {
+  if (!raw) return "/compte"
+  if (raw.startsWith("/") && !raw.startsWith("//")) return raw
+  return "/compte"
+}
 
 export default function ConnexionPage() {
   const router = useRouter()
@@ -10,6 +17,12 @@ export default function ConnexionPage() {
   const [form, setForm] = useState({ email: "", password: "" })
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle")
   const [error, setError] = useState("")
+  const [redirectTo, setRedirectTo] = useState("/compte")
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setRedirectTo(safeRedirect(params.get("redirect")))
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -17,7 +30,7 @@ export default function ConnexionPage() {
     setError("")
     try {
       await login(form.email, form.password)
-      router.push("/compte")
+      router.push(redirectTo)
     } catch {
       setStatus("error")
       setError("Email ou mot de passe incorrect.")
@@ -69,7 +82,10 @@ export default function ConnexionPage() {
           <a href="/mot-de-passe-oublie">Mot de passe oublié ?</a>
         </p>
         <p style={{ marginTop: "0.5rem", fontSize: "0.875rem", color: "#3a362f" }}>
-          Pas encore de compte ? <a href="/inscription">Créer un compte</a>
+          Pas encore de compte ?{" "}
+          <a href={`/inscription${redirectTo !== "/compte" ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`}>
+            Créer un compte
+          </a>
         </p>
       </form>
     </article>

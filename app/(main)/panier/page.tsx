@@ -97,23 +97,27 @@ export default function PanierPage() {
               <span>Total</span>
               <span>{formatPrice(total, currency)}</span>
             </div>
-            <button
-              disabled
+            <a
+              href="/checkout"
               style={{
+                display: "block",
                 width: "100%",
                 marginTop: "1.5rem",
                 padding: "0.9rem",
-                background: "#ccc",
+                background: "var(--color-terracotta)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "6px",
                 fontSize: "1rem",
                 fontWeight: "600",
-                cursor: "not-allowed",
+                textAlign: "center",
               }}
             >
-              Paiement bientôt disponible
-            </button>
+              Passer la commande
+            </a>
+            <p style={{ marginTop: "0.75rem", fontSize: "0.8rem", color: "#666", textAlign: "center" }}>
+              Livraison et taxes calculées à l&apos;étape suivante.
+            </p>
             <a
               href="/"
               style={{

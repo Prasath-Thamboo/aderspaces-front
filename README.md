@@ -1,6 +1,6 @@
-# MaisonPrint — Storefront (Next.js)
+# Aderspace — Storefront (Next.js)
 
-Interface boutique pour MaisonPrint, construite avec Next.js 15 App Router et le SDK Medusa v2.
+Interface boutique pour Aderspace, construite avec Next.js 15 App Router et le SDK Medusa v2.
 
 ## Stack
 
@@ -12,15 +12,15 @@ Interface boutique pour MaisonPrint, construite avec Next.js 15 App Router et le
 
 - Node.js >= 20
 - pnpm >= 9
-- Backend Medusa démarré (voir `maisonprint-backend`)
+- Backend Medusa démarré (voir `aderspaces-back`)
 
 ## Installation
 
 ### 1. Cloner le dépôt et installer les dépendances
 
 ```bash
-git clone https://github.com/VOTRE_ORG/maisonprint-storefront.git
-cd maisonprint-storefront
+git clone https://github.com/Prasath-Thamboo/aderspaces-front.git
+cd aderspaces-front
 pnpm install
 ```
 
@@ -77,8 +77,8 @@ lib/
 
 ## Ordre de démarrage
 
-1. `docker compose up -d` (dans `maisonprint-backend`)
-2. `pnpm dev` (dans `maisonprint-backend`)
+1. `docker compose up -d` (dans `aderspaces-back`)
+2. `pnpm dev` (dans `aderspaces-back`)
 3. Créer la clé publiable dans l'Admin
 4. Renseigner la clé dans `.env.local`
-5. `pnpm dev` (dans `maisonprint-storefront`)
+5. `pnpm dev` (dans `aderspaces-front`)

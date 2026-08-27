@@ -69,8 +69,10 @@ export function CartDrawer() {
                 <span>Total</span>
                 <strong>{formatPrice(total, currency)}</strong>
               </div>
-              <a href="/panier" className="cart-view-btn">Voir le panier</a>
-              <p className="cart-checkout-note">Paiement bientôt disponible</p>
+              <a href="/checkout" className="cart-checkout-btn" onClick={() => setIsOpen(false)}>
+                Passer la commande
+              </a>
+              <a href="/panier" className="cart-view-btn" onClick={() => setIsOpen(false)}>Voir le panier</a>
             </div>
           </>
         )}

@@ -73,7 +73,7 @@ export default function ContactPage() {
 
           {status === "error" && (
             <p style={{ color: "#c00", marginBottom: "1rem" }}>
-              Une erreur est survenue. Veuillez réessayer ou nous écrire directement à contact@maisonprint.fr.
+              Une erreur est survenue. Veuillez réessayer ou nous écrire directement à contact@aderspace.fr.
             </p>
           )}
 

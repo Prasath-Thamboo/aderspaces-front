@@ -1,12 +1,24 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
+
+function safeRedirect(raw: string | null): string {
+  if (!raw) return "/compte"
+  if (raw.startsWith("/") && !raw.startsWith("//")) return raw
+  return "/compte"
+}
 
 export default function InscriptionPage() {
   const router = useRouter()
   const { register } = useAuth()
+  const [redirectTo, setRedirectTo] = useState("/compte")
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setRedirectTo(safeRedirect(params.get("redirect")))
+  }, [])
   const [form, setForm] = useState({
     first_name: "",
     last_name: "",
@@ -38,7 +50,7 @@ export default function InscriptionPage() {
         first_name: form.first_name,
         last_name: form.last_name,
       })
-      router.push("/compte")
+      router.push(redirectTo)
     } catch {
       setStatus("error")
       setError("Impossible de créer le compte. Cet email est peut-être déjà utilisé.")
@@ -122,7 +134,10 @@ export default function InscriptionPage() {
         </button>
 
         <p style={{ marginTop: "1.5rem", fontSize: "0.875rem", color: "#3a362f" }}>
-          Déjà un compte ? <a href="/connexion">Se connecter</a>
+          Déjà un compte ?{" "}
+          <a href={`/connexion${redirectTo !== "/compte" ? `?redirect=${encodeURIComponent(redirectTo)}` : ""}`}>
+            Se connecter
+          </a>
         </p>
       </form>
     </article>

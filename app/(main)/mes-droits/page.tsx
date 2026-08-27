@@ -79,7 +79,7 @@ export default function MesDroitsPage() {
 
           {status === "error" && (
             <p style={{ color: "#c00", marginBottom: "1rem" }}>
-              Une erreur est survenue. Veuillez réessayer ou nous contacter à dpo@maisonprint.fr.
+              Une erreur est survenue. Veuillez réessayer ou nous contacter à dpo@aderspace.fr.
             </p>
           )}
 

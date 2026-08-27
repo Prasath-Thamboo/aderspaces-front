@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react"
 import { sdk } from "@/lib/medusa"
-import { getCartId, saveCartId } from "@/lib/cart"
+import { getCartId, saveCartId, clearCartId } from "@/lib/cart"
 
 type CartItem = {
   id: string
@@ -31,6 +31,8 @@ type CartContextType = {
   addItem: (variantId: string, quantity?: number) => Promise<void>
   removeItem: (lineItemId: string) => Promise<void>
   updateQuantity: (lineItemId: string, quantity: number) => Promise<void>
+  refresh: () => Promise<void>
+  clearCart: () => void
   itemCount: number
 }
 
@@ -113,10 +115,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [cart, removeItem])
 
+  const refresh = useCallback(async () => {
+    const cartId = getCartId()
+    if (!cartId) { setCart(null); return }
+    try {
+      const { cart: updated } = await sdk.store.cart.retrieve(cartId)
+      setCart(updated as unknown as Cart)
+    } catch {
+      setCart(null)
+    }
+  }, [])
+
+  const clearCart = useCallback(() => {
+    clearCartId()
+    setCart(null)
+  }, [])
+
   const itemCount = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0
 
   return (
-    <CartContext.Provider value={{ cart, isLoading, isOpen, setIsOpen, addItem, removeItem, updateQuantity, itemCount }}>
+    <CartContext.Provider value={{ cart, isLoading, isOpen, setIsOpen, addItem, removeItem, updateQuantity, refresh, clearCart, itemCount }}>
       {children}
     </CartContext.Provider>
   )
