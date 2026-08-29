@@ -2,7 +2,9 @@ export default function NotFound() {
   return (
     <div style={{ textAlign: "center", padding: "4rem 2rem" }}>
       <h1 style={{ fontSize: "3rem", marginBottom: "1rem" }}>404</h1>
-      <p style={{ color: "#666", marginBottom: "2rem" }}>Cette page n'existe pas ou a été déplacée.</p>
+      <p style={{ color: "#666", marginBottom: "2rem" }}>
+        Cette page n&apos;existe pas ou a été déplacée.
+      </p>
       <a
         href="/"
         style={{
@@ -13,7 +15,7 @@ export default function NotFound() {
           textDecoration: "none",
         }}
       >
-        Retour à l'accueil
+        Retour à l&apos;accueil
       </a>
     </div>
   )

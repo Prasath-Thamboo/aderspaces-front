@@ -16,29 +16,42 @@ const CATEGORY_SECTIONS: SectionSpec[] = [
     label: "Mobilier",
     ariaLabel: "Découvrir le mobilier",
   },
-  {
-    id: "home-imprimantes",
-    href: "/categories/imprimantes",
-    video: "imprimantes",
-    label: "Imprimantes",
-    ariaLabel: "Découvrir les imprimantes",
-  },
-  {
-    id: "home-cartouches",
-    href: "/categories/encre-cartouches",
-    video: "cartouches",
-    label: "Encre & Cartouches",
-    ariaLabel: "Découvrir l'encre et les cartouches",
-  },
 ]
 
-const REPARATION_SECTION: SectionSpec = {
-  id: "home-reparation",
-  href: "/reparation",
-  video: "reparation",
-  label: "Réparation",
-  ariaLabel: "Découvrir le service de réparation",
+type SupplierSection = {
+  id: string
+  href: string
+  label: string
+  ariaLabel: string
+  makers: string[]
+  video?: string
 }
+
+// video: nom du fichier (sans extension) dans public/videos/ ; absent => fond dégradé.
+const SUPPLIER_SECTIONS: SupplierSection[] = [
+  {
+    id: "home-fournisseurs-italie",
+    href: "/nos-fournisseurs#italie",
+    label: "Italie",
+    ariaLabel: "Nos fournisseurs italiens",
+    makers: ["Quadrifoglio", "Sinetica", "Estel", "Manerba", "Frezza", "Las Mobili"],
+    video: "italie",
+  },
+  {
+    id: "home-fournisseurs-lituanie",
+    href: "/nos-fournisseurs#lituanie",
+    label: "Lituanie",
+    ariaLabel: "Nos fournisseurs lituaniens",
+    makers: ["Narbutas"],
+  },
+  {
+    id: "home-fournisseurs-pologne",
+    href: "/nos-fournisseurs#pologne",
+    label: "Pologne",
+    ariaLabel: "Nos fournisseurs polonais",
+    makers: ["Nowy Styl", "MDD", "Bejot"],
+  },
+]
 
 function CornerLabel({ href, label, ariaLabel }: { href: string; label: string; ariaLabel: string }) {
   return (
@@ -70,7 +83,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 2-4. Catégories produit — vidéo en fond, texte en capitale en bas à gauche */}
+        {/* 2. Catégorie Mobilier — vidéo en fond, texte en capitale en bas à gauche */}
         {CATEGORY_SECTIONS.map((section) => (
           <section key={section.id} id={section.id} className="fp-section fp-section--dark fp-section--feature" aria-label={section.label}>
             <div className="fp-section__bg">
@@ -82,15 +95,26 @@ export default function HomePage() {
           </section>
         ))}
 
-        {/* 5. Service de réparation — vidéo en fond, texte en capitale en bas à gauche */}
-        <section id={REPARATION_SECTION.id} className="fp-section fp-section--dark fp-section--feature" aria-label={REPARATION_SECTION.label}>
-          <div className="fp-section__bg">
-            <video className="fp-bg-video" autoPlay muted loop playsInline preload="metadata">
-              <source src={`/videos/${REPARATION_SECTION.video}.mp4`} type="video/mp4" />
-            </video>
-          </div>
-          <CornerLabel href={REPARATION_SECTION.href} label={REPARATION_SECTION.label} ariaLabel={REPARATION_SECTION.ariaLabel} />
-        </section>
+        {/* 3-5. Nos fournisseurs par pays de provenance — fond à définir */}
+        {SUPPLIER_SECTIONS.map((section) => (
+          <section key={section.id} id={section.id} className="fp-section fp-section--dark fp-section--feature" aria-label={section.ariaLabel}>
+            <div className="fp-section__bg">
+              {section.video && (
+                <video className="fp-bg-video" autoPlay muted loop playsInline preload="metadata">
+                  <source src={`/videos/${section.video}.mp4`} type="video/mp4" />
+                </video>
+              )}
+            </div>
+            <div className="fp-feature-content">
+              <ul className="fp-feature-list">
+                {section.makers.map((maker) => (
+                  <li key={maker}>{maker}</li>
+                ))}
+              </ul>
+              <CornerLabel href={section.href} label={section.label} ariaLabel={section.ariaLabel} />
+            </div>
+          </section>
+        ))}
 
         {/* 6. Présentation Aderspace — vidéo plein écran, sans texte ni image */}
         <section id="home-pitch" className="fp-section fp-section--dark fp-section--pitch" aria-label="Présentation d'Aderspace">

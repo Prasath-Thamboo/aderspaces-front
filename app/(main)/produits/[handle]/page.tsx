@@ -2,8 +2,7 @@ import { sdk } from "@/lib/medusa"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import { AddToCartButton } from "@/components/cart/AddToCartButton"
-import { CompatibleProducts } from "@/components/CompatibleProducts"
-import { getCompatibleInks, getCompatiblePrinters } from "@/lib/compatibility"
+import { isHiddenProduct } from "@/lib/catalog-visibility"
 
 export const revalidate = 60
 
@@ -14,9 +13,12 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { handle } = await params
   try {
-    const { products } = await sdk.store.product.list({ handle })
+    const { products } = await sdk.store.product.list({
+      handle,
+      fields: "id,title,description,thumbnail,categories.handle",
+    })
     const product = products[0]
-    if (!product) return {}
+    if (!product || isHiddenProduct(product)) return {}
     return {
       title: product.title ?? undefined,
       description: product.description ?? undefined,
@@ -45,17 +47,10 @@ export default async function ProductPage({ params }: Props) {
   })
 
   const product = products[0]
-  if (!product) notFound()
+  if (!product || isHiddenProduct(product)) notFound()
 
   const category = product.categories?.[0]
-  const categoryHandle = category?.handle ?? ""
   const firstPrice = (product.variants?.[0] as any)?.prices?.[0]
-
-  const isInk = categoryHandle === "encre-cartouches"
-  const isPrinter = categoryHandle === "imprimantes"
-
-  const compatibleInkHandles = isPrinter ? getCompatibleInks(handle) : []
-  const compatiblePrinterHandles = isInk ? getCompatiblePrinters(handle) : []
 
   return (
     <>
@@ -73,9 +68,9 @@ export default async function ProductPage({ params }: Props) {
         </ol>
       </nav>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "start" }}>
+      <div className="product-detail">
         {/* Galerie */}
-        <div>
+        <div className="product-detail__gallery">
           {product.thumbnail && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -87,7 +82,7 @@ export default async function ProductPage({ params }: Props) {
         </div>
 
         {/* Infos produit */}
-        <div>
+        <div className="product-detail__info">
           <h1 style={{ fontSize: "1.75rem", marginBottom: "0.5rem" }}>{product.title}</h1>
 
           {firstPrice && (
@@ -132,14 +127,6 @@ export default async function ProductPage({ params }: Props) {
           )}
         </div>
       </div>
-
-      {/* Compatibilité */}
-      {isPrinter && compatibleInkHandles.length > 0 && (
-        <CompatibleProducts handles={compatibleInkHandles} title="Consommables compatibles" />
-      )}
-      {isInk && compatiblePrinterHandles.length > 0 && (
-        <CompatibleProducts handles={compatiblePrinterHandles} title="Compatible avec ces imprimantes" />
-      )}
     </>
   )
 }

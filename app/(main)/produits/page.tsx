@@ -1,11 +1,12 @@
 import { sdk } from "@/lib/medusa"
 import type { Metadata } from "next"
+import { isHiddenProduct } from "@/lib/catalog-visibility"
 
 export const revalidate = 60
 
 export const metadata: Metadata = {
   title: "Tous les produits",
-  description: "Mobilier de bureau, ordinateurs, imprimantes et encre — toute la collection Aderspace.",
+  description: "Mobilier de bureau design : bureaux, sièges et rangements — toute la collection Aderspace.",
 }
 
 function formatPrice(amount: number, currencyCode: string): string {
@@ -15,11 +16,23 @@ function formatPrice(amount: number, currencyCode: string): string {
   }).format(amount / 100)
 }
 
+async function listProducts() {
+  try {
+    const { products } = await sdk.store.product.list({
+      limit: 100,
+      fields: "id,title,handle,thumbnail,variants.prices,categories.handle",
+    })
+    return products.filter((p) => !isHiddenProduct(p))
+  } catch (err) {
+    // Backend injoignable (build sans API, coupure pendant une revalidation) :
+    // on rend une page vide plutôt que de casser toute la route.
+    console.error("[produits] échec du chargement des produits", err)
+    return []
+  }
+}
+
 export default async function ProduitsPage() {
-  const { products } = await sdk.store.product.list({
-    limit: 100,
-    fields: "id,title,handle,thumbnail,variants.prices",
-  })
+  const products = await listProducts()
 
   return (
     <>

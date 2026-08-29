@@ -1,0 +1,9 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    // Désactivées volontairement : tout le storefront utilise <a>/<img> bruts.
+    // Migration vers <Link>/next/image suivie comme un lot dédié (backlog P1).
+    "@next/next/no-html-link-for-pages": "off",
+    "@next/next/no-img-element": "off"
+  }
+}

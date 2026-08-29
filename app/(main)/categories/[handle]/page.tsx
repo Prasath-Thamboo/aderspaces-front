@@ -1,6 +1,7 @@
 import { sdk } from "@/lib/medusa"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import { isHiddenCategory } from "@/lib/catalog-visibility"
 
 export const revalidate = 60
 
@@ -10,6 +11,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { handle } = await params
+
+  if (isHiddenCategory(handle)) return {}
 
   try {
     const { product_categories } = await sdk.store.category.list({ handle })
@@ -32,19 +35,32 @@ function formatPrice(amount: number, currencyCode: string): string {
   }).format(amount / 100)
 }
 
+async function loadCategory(handle: string) {
+  try {
+    const { product_categories } = await sdk.store.category.list({ handle })
+    const category = product_categories[0]
+    if (!category) return null
+
+    const { products } = await sdk.store.product.list({
+      category_id: [category.id],
+      limit: 24,
+      fields: "id,title,handle,thumbnail,variants.prices",
+    })
+    return { category, products }
+  } catch (err) {
+    console.error("[categorie] échec du chargement", handle, err)
+    return null
+  }
+}
+
 export default async function CategoryPage({ params }: Props) {
   const { handle } = await params
 
-  const { product_categories } = await sdk.store.category.list({ handle })
-  const category = product_categories[0]
+  if (isHiddenCategory(handle)) notFound()
 
-  if (!category) notFound()
-
-  const { products } = await sdk.store.product.list({
-    category_id: [category.id],
-    limit: 24,
-    fields: "id,title,handle,thumbnail,variants.prices",
-  })
+  const data = await loadCategory(handle)
+  if (!data) notFound()
+  const { category, products } = data
 
   return (
     <>

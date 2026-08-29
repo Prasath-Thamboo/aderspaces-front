@@ -22,11 +22,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Aderspace — Mobilier, Tech & Impression",
+    default: "Aderspace — Mobilier de bureau",
     template: "%s | Aderspace",
   },
   description:
-    "Mobilier de bureau, ordinateurs, imprimantes, encre et service de réparation. Une sélection élégante pour votre espace de travail.",
+    "Mobilier de bureau design : bureaux, sièges et rangements de fabricants européens. Une sélection élégante pour votre espace de travail.",
   robots: {
     index: true,
     follow: true,
@@ -52,8 +52,8 @@ export default function RootLayout({
               <p>© {new Date().getFullYear()} Aderspace</p>
               <ul>
                 <li><a href="/a-propos">À propos</a></li>
+                <li><a href="/nos-fournisseurs">Nos fournisseurs</a></li>
                 <li><a href="/blog">Blog</a></li>
-                <li><a href="/reparation">Réparation</a></li>
                 <li><a href="/mentions-legales">Mentions légales</a></li>
                 <li><a href="/cgv">CGV</a></li>
                 <li><a href="/politique-confidentialite">Confidentialité</a></li>

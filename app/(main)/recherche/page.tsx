@@ -1,4 +1,6 @@
 import type { Metadata } from "next"
+import { sdk } from "@/lib/medusa"
+import { getHiddenProductHandles } from "@/lib/catalog-visibility"
 
 export const metadata: Metadata = { title: "Recherche" }
 
@@ -21,19 +23,15 @@ function formatPrice(amount: number, currencyCode: string): string {
 async function searchProducts(q: string): Promise<SearchHit[]> {
   if (!q.trim()) return []
   try {
-    const backendUrl = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000"
-    const res = await fetch(
-      `${backendUrl}/store/search?q=${encodeURIComponent(q)}&limit=20`,
-      {
-        headers: {
-          "x-publishable-api-key": process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY || "",
-        },
-        next: { revalidate: 30 },
-      }
-    )
-    if (!res.ok) return []
-    const data = await res.json()
-    return data.hits ?? []
+    // Passe par le SDK Medusa : URL et clé publiable proviennent de la config,
+    // la clé `x-publishable-api-key` est ajoutée automatiquement.
+    const data = await sdk.client.fetch<{ hits?: SearchHit[] }>("/store/search", {
+      query: { q, limit: 20 },
+      next: { revalidate: 30 },
+    })
+    const hits = data.hits ?? []
+    const hidden = await getHiddenProductHandles()
+    return hits.filter((h) => !hidden.has(h.handle))
   } catch {
     return []
   }

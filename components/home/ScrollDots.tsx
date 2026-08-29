@@ -5,9 +5,9 @@ import { useEffect, useState } from "react"
 const SECTIONS = [
   { id: "home-hero", label: "Accueil" },
   { id: "home-mobilier", label: "Mobilier" },
-  { id: "home-imprimantes", label: "Imprimantes" },
-  { id: "home-cartouches", label: "Encre & Cartouches" },
-  { id: "home-reparation", label: "Réparation" },
+  { id: "home-fournisseurs-italie", label: "Fournisseurs italiens" },
+  { id: "home-fournisseurs-lituanie", label: "Fournisseurs lituaniens" },
+  { id: "home-fournisseurs-pologne", label: "Fournisseurs polonais" },
   { id: "home-pitch", label: "À propos" },
 ]
 

@@ -11,7 +11,7 @@ export default function BlogPage() {
       <h1>Blog</h1>
       <p style={{ marginTop: "0.75rem", color: "#3a362f" }}>
         Nos premiers articles arrivent bientôt : conseils d&apos;aménagement, guides d&apos;entretien
-        de vos équipements et actualités Aderspace.
+        de votre mobilier et actualités Aderspace.
       </p>
     </article>
   )

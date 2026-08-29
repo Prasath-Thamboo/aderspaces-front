@@ -63,17 +63,7 @@ export default function CgvPage() {
       </section>
 
       <section>
-        <h2>Article 7 — Service de réparation</h2>
-        <p>
-          Le service de réparation et de maintenance informatique proposé par Aderspace fait l&apos;objet
-          d&apos;un devis préalable. Aucune intervention n&apos;est engagée sans acceptation écrite du devis
-          par le Client. Le détail du déroulement est présenté sur la page
-          {" "}<a href="/reparation">Réparation</a>.
-        </p>
-      </section>
-
-      <section>
-        <h2>Article 8 — Protection des données</h2>
+        <h2>Article 7 — Protection des données</h2>
         <p>
           Les informations collectées lors de la commande sont nécessaires au traitement de celle-ci.
           Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de rectification et de suppression
@@ -82,7 +72,7 @@ export default function CgvPage() {
       </section>
 
       <section>
-        <h2>Article 9 — Droit applicable</h2>
+        <h2>Article 8 — Droit applicable</h2>
         <p>
           Les présentes CGV sont soumises au droit français. Tout litige relatif à leur interprétation
           et/ou leur exécution relève de la compétence des tribunaux français.
