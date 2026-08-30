@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { sdk } from "@/lib/medusa"
 import { AccountTabs } from "@/components/account/AccountTabs"
+import { downloadInvoice } from "@/lib/invoice"
 
 type Order = {
   id: string
@@ -38,6 +39,22 @@ export default function CommandesPage() {
   const router = useRouter()
   const { customer, isLoading } = useAuth()
   const [orders, setOrders] = useState<Order[] | null>(null)
+  const [invoiceBusy, setInvoiceBusy] = useState<string | null>(null)
+  const [invoiceError, setInvoiceError] = useState<string | null>(null)
+
+  const handleInvoice = async (order: Order) => {
+    setInvoiceError(null)
+    setInvoiceBusy(order.id)
+    try {
+      await downloadInvoice(order.id, order.display_id)
+    } catch {
+      setInvoiceError(
+        "La facture n'est pas encore disponible pour cette commande. Réessayez dans quelques instants."
+      )
+    } finally {
+      setInvoiceBusy(null)
+    }
+  }
 
   useEffect(() => {
     if (!isLoading && !customer) router.push("/connexion")
@@ -70,20 +87,36 @@ export default function CommandesPage() {
         ) : orders.length === 0 ? (
           <p style={{ color: "#3a362f" }}>Vous n&apos;avez pas encore passé de commande.</p>
         ) : (
-          <ul style={{ listStyle: "none", display: "grid", gap: "0.75rem" }}>
-            {orders.map((order) => (
-              <li key={order.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "var(--color-cream)", border: "1px solid var(--color-border)", borderRadius: "8px", padding: "1rem 1.25rem" }}>
-                <div>
-                  <p style={{ fontWeight: 600 }}>Commande #{order.display_id}</p>
-                  <p style={{ fontSize: "0.85rem", color: "var(--color-neutral)" }}>{formatDate(order.created_at)}</p>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <p className="price">{formatPrice(order.total, order.currency_code)}</p>
-                  <p style={{ fontSize: "0.85rem", color: "var(--color-neutral)" }}>{ORDER_STATUS_LABELS[order.status] ?? order.status}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <>
+            {invoiceError && (
+              <p style={{ color: "var(--color-terracotta, #C1502E)", marginBottom: "0.75rem", fontSize: "0.9rem" }}>
+                {invoiceError}
+              </p>
+            )}
+            <ul style={{ listStyle: "none", display: "grid", gap: "0.75rem" }}>
+              {orders.map((order) => (
+                <li key={order.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "1rem", background: "var(--color-cream)", border: "1px solid var(--color-border)", borderRadius: "8px", padding: "1rem 1.25rem" }}>
+                  <div>
+                    <p style={{ fontWeight: 600 }}>Commande #{order.display_id}</p>
+                    <p style={{ fontSize: "0.85rem", color: "var(--color-neutral)" }}>{formatDate(order.created_at)}</p>
+                    <button
+                      type="button"
+                      onClick={() => handleInvoice(order)}
+                      disabled={invoiceBusy === order.id}
+                      className="btn-text"
+                      style={{ marginTop: "0.35rem", padding: 0, fontSize: "0.85rem" }}
+                    >
+                      {invoiceBusy === order.id ? "Préparation…" : "Télécharger la facture (PDF)"}
+                    </button>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <p className="price">{formatPrice(order.total, order.currency_code)}</p>
+                    <p style={{ fontSize: "0.85rem", color: "var(--color-neutral)" }}>{ORDER_STATUS_LABELS[order.status] ?? order.status}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </section>
     </article>

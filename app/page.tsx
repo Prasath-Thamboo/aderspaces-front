@@ -1,4 +1,7 @@
 import { ScrollDots } from "@/components/home/ScrollDots"
+import { HomeMotion } from "@/components/home/HomeMotion"
+import { Reveal } from "@/components/motion/Reveal"
+import { Magnetic } from "@/components/motion/Magnetic"
 
 type SectionSpec = {
   id: string
@@ -43,6 +46,7 @@ const SUPPLIER_SECTIONS: SupplierSection[] = [
     label: "Lituanie",
     ariaLabel: "Nos fournisseurs lituaniens",
     makers: ["Narbutas"],
+    video: "lituanie",
   },
   {
     id: "home-fournisseurs-pologne",
@@ -55,10 +59,12 @@ const SUPPLIER_SECTIONS: SupplierSection[] = [
 
 function CornerLabel({ href, label, ariaLabel }: { href: string; label: string; ariaLabel: string }) {
   return (
-    <a href={href} className="fp-corner-label" aria-label={ariaLabel}>
-      {label}
-      <span className="fp-corner-label__arrow" aria-hidden="true">→</span>
-    </a>
+    <Magnetic>
+      <a href={href} className="fp-corner-label" aria-label={ariaLabel}>
+        {label}
+        <span className="fp-corner-label__arrow" aria-hidden="true">→</span>
+      </a>
+    </Magnetic>
   )
 }
 
@@ -66,6 +72,7 @@ export default function HomePage() {
   return (
     <>
       <ScrollDots />
+      <HomeMotion />
       <div className="fp-container">
         {/* 1. Hero — vidéo plein écran, sans texte ni bouton */}
         <section id="home-hero" className="fp-section fp-section--dark" aria-label="Bienvenue chez Aderspace">
@@ -83,7 +90,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 2. Catégorie Mobilier — vidéo en fond, texte en capitale en bas à gauche */}
+        {/* 2. Catégorie Mobilier — vidéo en fond, libellé serif en bas à gauche */}
         {CATEGORY_SECTIONS.map((section) => (
           <section key={section.id} id={section.id} className="fp-section fp-section--dark fp-section--feature" aria-label={section.label}>
             <div className="fp-section__bg">
@@ -91,11 +98,13 @@ export default function HomePage() {
                 <source src={`/videos/${section.video}.mp4`} type="video/mp4" />
               </video>
             </div>
-            <CornerLabel href={section.href} label={section.label} ariaLabel={section.ariaLabel} />
+            <Reveal variant="fade" as="div" className="fp-corner-slot">
+              <CornerLabel href={section.href} label={section.label} ariaLabel={section.ariaLabel} />
+            </Reveal>
           </section>
         ))}
 
-        {/* 3-5. Nos fournisseurs par pays de provenance — fond à définir */}
+        {/* 3-5. Nos fournisseurs par pays de provenance */}
         {SUPPLIER_SECTIONS.map((section) => (
           <section key={section.id} id={section.id} className="fp-section fp-section--dark fp-section--feature" aria-label={section.ariaLabel}>
             <div className="fp-section__bg">
@@ -107,16 +116,20 @@ export default function HomePage() {
             </div>
             <div className="fp-feature-content">
               <ul className="fp-feature-list">
-                {section.makers.map((maker) => (
-                  <li key={maker}>{maker}</li>
+                {section.makers.map((maker, i) => (
+                  <Reveal key={maker} as="li" variant="up" delay={i * 56}>
+                    {maker}
+                  </Reveal>
                 ))}
               </ul>
-              <CornerLabel href={section.href} label={section.label} ariaLabel={section.ariaLabel} />
+              <Reveal variant="fade" as="div" className="fp-corner-slot" delay={section.makers.length * 56 + 40}>
+                <CornerLabel href={section.href} label={section.label} ariaLabel={section.ariaLabel} />
+              </Reveal>
             </div>
           </section>
         ))}
 
-        {/* 6. Présentation Aderspace — vidéo plein écran, sans texte ni image */}
+        {/* 6. Présentation Aderspace — vidéo plein écran */}
         <section id="home-pitch" className="fp-section fp-section--dark fp-section--pitch" aria-label="Présentation d'Aderspace">
           <div className="fp-section__bg">
             <video className="fp-bg-video" autoPlay muted loop playsInline preload="metadata">

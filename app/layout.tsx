@@ -7,11 +7,17 @@ import { CartDrawer } from "@/components/cart/CartDrawer"
 import { CookieBanner } from "@/components/CookieBanner"
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { MainWrapper } from "@/components/layout/MainWrapper"
+import { SmoothScroll } from "@/components/motion/SmoothScroll"
+import { Cursor } from "@/components/motion/Cursor"
+import { BrandIntro } from "@/components/motion/BrandIntro"
+import { PageTransition } from "@/components/motion/PageTransition"
 
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
   display: "swap",
+  // axes optiques : contraste maximal en grand corps (voir --fraunces-*)
+  axes: ["opsz", "SOFT", "WONK"],
 })
 
 const inter = Inter({
@@ -43,10 +49,17 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <CartProvider>
+            <SmoothScroll />
+            <BrandIntro />
+            <Cursor />
+            <div className="grain" aria-hidden="true" />
+
             <SiteHeader />
 
             <CartDrawer />
-            <MainWrapper>{children}</MainWrapper>
+            <PageTransition>
+              <MainWrapper>{children}</MainWrapper>
+            </PageTransition>
 
             <footer>
               <p>© {new Date().getFullYear()} Aderspace</p>
