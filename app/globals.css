@@ -1000,7 +1000,7 @@ footer a:hover { color: var(--color-ochre); text-decoration: none; }
 .products-wall__media img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;   /* image entière visible, cadre uniforme */
   display: block;
   transition: transform 0.4s ease;
 }
@@ -2242,6 +2242,43 @@ html.is-home-scroll {
     gap: 1.5rem;
   }
   .product-detail__gallery { order: -1; }
+}
+
+/* Galerie produit : cadre uniforme, image entière visible quelles que soient
+   ses dimensions natives (letterbox sur fond plâtre), largeur fluide. */
+.product-gallery__frame,
+.product-gallery__thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--paper-raised);
+  border: 1px solid color-mix(in srgb, var(--ink-muted) 30%, transparent);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+}
+
+.product-gallery__frame {
+  aspect-ratio: 4 / 3;
+}
+
+.product-gallery__frame img,
+.product-gallery__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* toute l'image dans le cadre, jamais rognée */
+  display: block;
+}
+
+.product-gallery__thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.product-gallery__thumb {
+  aspect-ratio: 1 / 1;
 }
 
 /* ============================================================

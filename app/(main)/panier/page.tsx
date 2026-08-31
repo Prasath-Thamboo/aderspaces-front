@@ -62,7 +62,7 @@ export default function PanierPage() {
                     </p>
                   )}
                   <p style={{ fontWeight: "700", fontSize: "1.1rem" }}>
-                    {formatPrice(item.unit_price * item.quantity, item.currency_code)}
+                    {formatPrice(item.unit_price * item.quantity, item.currency_code ?? currency)}
                   </p>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "0.75rem" }}>
                     <div style={{ display: "flex", alignItems: "center", border: "1px solid #ccc", borderRadius: "4px" }}>

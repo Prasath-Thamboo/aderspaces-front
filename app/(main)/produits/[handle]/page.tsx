@@ -45,7 +45,7 @@ async function loadProduct(handle: string) {
     const { products } = await sdk.store.product.list({
       handle,
       fields:
-        "id,title,handle,description,thumbnail,images,options,variants.prices,variants.options,categories,metadata",
+        "id,title,handle,description,thumbnail,*images,options,variants.prices,variants.options,categories,metadata",
     })
     return products[0] ?? null
   } catch (err) {
@@ -62,6 +62,17 @@ export default async function ProductPage({ params }: Props) {
 
   const category = product.categories?.[0]
   const firstPrice = (product.variants?.[0] as any)?.prices?.[0]
+
+  // Galerie : les médias du produit, vignette en tête ; repli sur le seul thumbnail.
+  const galleryUrls: string[] = (() => {
+    const urls = ((product.images ?? []) as { url?: string }[])
+      .map((img) => img?.url)
+      .filter((u): u is string => Boolean(u))
+    if (product.thumbnail) {
+      return [product.thumbnail, ...urls.filter((u) => u !== product.thumbnail)]
+    }
+    return urls
+  })()
 
   return (
     <>
@@ -82,13 +93,21 @@ export default async function ProductPage({ params }: Props) {
       <div className="product-detail">
         {/* Galerie */}
         <div className="product-detail__gallery">
-          {product.thumbnail && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={product.thumbnail}
-              alt={product.title ?? ""}
-              style={{ width: "100%", borderRadius: "8px" }}
-            />
+          {galleryUrls[0] && (
+            <div className="product-gallery__frame">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={galleryUrls[0]} alt={product.title ?? ""} />
+            </div>
+          )}
+          {galleryUrls.length > 1 && (
+            <div className="product-gallery__thumbs">
+              {galleryUrls.slice(1).map((url, i) => (
+                <div key={url} className="product-gallery__thumb">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={url} alt={`${product.title ?? "Produit"} — vue ${i + 2}`} />
+                </div>
+              ))}
+            </div>
           )}
         </div>
 

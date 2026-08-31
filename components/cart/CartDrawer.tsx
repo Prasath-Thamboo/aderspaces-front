@@ -38,7 +38,7 @@ export function CartDrawer() {
                       <p className="cart-item-variant">{item.variant.title}</p>
                     )}
                     <p className="cart-item-price">
-                      {formatPrice(item.unit_price * item.quantity, item.currency_code)}
+                      {formatPrice(item.unit_price * item.quantity, item.currency_code ?? currency)}
                     </p>
                     <div className="cart-qty">
                       <button

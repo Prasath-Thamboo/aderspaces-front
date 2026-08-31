@@ -54,6 +54,7 @@ const SUPPLIER_SECTIONS: SupplierSection[] = [
     label: "Pologne",
     ariaLabel: "Nos fournisseurs polonais",
     makers: ["Nowy Styl", "MDD", "Bejot"],
+    video: "pologne",
   },
 ]
 

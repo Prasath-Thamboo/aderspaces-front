@@ -15,9 +15,9 @@ export function clearCartId(): void {
   document.cookie = `${CART_COOKIE}=; max-age=0; path=/`
 }
 
-export function formatPrice(amount: number, currencyCode: string): string {
+export function formatPrice(amount: number, currencyCode?: string | null): string {
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
-    currency: currencyCode.toUpperCase(),
-  }).format(amount / 100)
+    currency: (currencyCode || "eur").toUpperCase(),
+  }).format((amount ?? 0) / 100)
 }

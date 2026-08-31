@@ -10,7 +10,7 @@ type CartItem = {
   thumbnail: string | null
   quantity: number
   unit_price: number
-  currency_code: string
+  currency_code?: string
   variant_id: string
   variant?: { title?: string | null }
 }
