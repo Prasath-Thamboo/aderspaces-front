@@ -33,9 +33,11 @@ export const metadata: Metadata = {
   },
   description:
     "Mobilier de bureau design : bureaux, sièges et rangements de fabricants européens. Une sélection élégante pour votre espace de travail.",
+  // Déploiement temporaire (pas encore le vrai domaine) : désindexé par défaut.
+  // Mettre NEXT_PUBLIC_SITE_INDEXABLE=true une fois le nom de domaine définitif en place.
   robots: {
-    index: true,
-    follow: true,
+    index: process.env.NEXT_PUBLIC_SITE_INDEXABLE === "true",
+    follow: process.env.NEXT_PUBLIC_SITE_INDEXABLE === "true",
   },
 }
 
