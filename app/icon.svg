@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Favicon Aderspace : monogramme « A » crème sur oxblood (tokens --signature / --cream) -->
+  <rect width="64" height="64" rx="14" fill="#5E2532"/>
+  <path d="M32 12 L49 52 H42.2 L38.6 43 H25.4 L21.8 52 H15 Z M27.6 37.4 H36.4 L32 26.2 Z" fill="#FAF6EE" fill-rule="evenodd"/>
+</svg>

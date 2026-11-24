@@ -39,5 +39,5 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   // Tout sauf les assets de build Next (hachés, sans contenu sensible).
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|icon.svg|apple-icon.png).*)"],
 }
